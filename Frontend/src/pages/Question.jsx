@@ -158,7 +158,7 @@ const Question = () => {
       </div>
       {
         showanswer?
-        ( <Answer/>):(
+        ( <Answer question={question} showanswer={showanswer} setShowAnswer={setShowAnswer}/>):(
           <div className='flex items-center'>
           Have got a better answer ?<div className='text-xs font-semibold text-blue-400 px-2' onClick={()=>{setShowAnswer(!showanswer)}}> ADD NEW ANSWER</div>
           </div>

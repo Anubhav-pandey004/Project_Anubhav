@@ -9,11 +9,15 @@ import { FaImage } from "react-icons/fa6";
 import ImageDilog from "../components/ImageDilog";
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import SummaryApi from '../common';
+import { toast } from 'react-toastify';
 
-const Answer = () => {
+
+const Answer = ({question={question}, showanswer={showanswer} ,setShowAnswer={setShowAnswer}}) => {
   const [close,setClose]=useState(false)
   const [profile,setProfile]=useState("")
   const navigate=useNavigate()
+
 
   const user=useSelector((state)=>{
     const user=state.user.user1
@@ -21,7 +25,10 @@ const Answer = () => {
   })
 
   const [formData, setFormData] = useState({
-    answer: ""
+    answer: "",
+    image: "",
+    answeredByUserId: user,
+    questionId: question._id,
   });
   const handleInput = (e) => {
     setFormData((currData) => ({
@@ -43,28 +50,34 @@ const Answer = () => {
 
   const handelSubmit = async(e) => {
     e.preventDefault();
+    formData.image=profile;
     console.log(formData);
-    // formData.image=profile;
-    // formData.userId=user
-    // const Response = await fetch(SummaryApi.newPost.url,{
-    //   method:SummaryApi.newPost.method,
-    //   credentials:'include',
-    //   headers:{
-    //     "content-type" : "application/json"
-    //   },
-    //   body:JSON.stringify(formData)
-    // }
-    // )
-    // const data=await Response.json()
-    // console.log(data);
-    // if(data.success){
-    //   toast.success(data.message)
-    //   navigate("/question/"+data.data._id)
-    // }
-    // if(data.error){
-    //   toast.error(data.message)
-    //   navigate("/login")
-    // }
+    const Response = await fetch(SummaryApi.newAnswer.url,{
+      method:SummaryApi.newAnswer.method,
+      credentials:'include',
+      headers:{
+        "content-type" : "application/json"
+      },
+      body:JSON.stringify(formData)
+    }
+    )
+    const data=await Response.json()
+    console.log(data);
+    if(data.success){
+      toast.success(data.message)
+      setFormData({
+        answer: "",
+        image: "",
+        answeredByUserId: user,
+        questionId: question._id,
+      })
+      setShowAnswer(!showanswer)
+      setProfile("")
+    }
+    if(data.error){
+      toast.error(data.message)
+      navigate("/login")
+    }
   };
   return (
     <div className='flex justify-center'>
@@ -94,6 +107,7 @@ const Answer = () => {
               value={formData.answer}
               onChange={handleInput}
               className="border border-slate-300 w-full h-9 rounded-md focus:border-blue-300 px-2"
+              required
             />
           </div>
           <Preview className="h-14 w-full border border-dashed mt-8 overflow-auto">
@@ -108,6 +122,7 @@ const Answer = () => {
                 </div>
         }
         <button className="border bg-blue-400 rounded-md hover:bg-blue-500 px-4 py-1 mt-1 text-white">Submit Answer</button>
+        <button className='float-right text-blue-400 hover:text-blue-500 font-semibold' onClick={()=>{setShowAnswer(!showanswer)}}>Cancel</button>
         </form>
         <main>
           {

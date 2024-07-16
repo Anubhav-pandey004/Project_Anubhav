@@ -8,6 +8,7 @@ const userDetails = require('../controller/userDetails')
 const createPost = require('../controller/createPost')
 const getQuestionDetails = require('../controller/getQuestionDetails')
 const addcomment  = require('../controller/addcomment')
+const addAnswer = require('../controller/addAnswer')
 
 router
     .route("/signup")
@@ -33,5 +34,8 @@ router
     .route("/addcomment")
     .post(authToken, wrapAsync(addcomment))
    
+router
+    .route("/new-answer")
+    .post(authToken,wrapAsync(addAnswer))
 
 module.exports=router 

@@ -31,6 +31,10 @@ const SummaryApi={
     getCommentDetails:{
         url: `${backendDomin}/getCommentDetails`,
         method: "POST"
+    },
+    newAnswer:{
+        url: `${backendDomin}/new-answer`,
+        method : "POST"
     }
 }
 export default SummaryApi
