@@ -1,0 +1,8 @@
+.scrollbar-none::-webkit-scrollbar{
+    display: none;
+}
+.code{
+    background-color: rgb(195, 195, 195);
+    border-radius: 5px;
+    padding-left: 3px;
+}
